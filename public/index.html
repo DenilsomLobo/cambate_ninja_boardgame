@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0812">
+  <title>Combate Ninja Board Game</title>
+  <meta name="description" content="Combate Ninja Board Game: jogo de tabuleiro de estratégia com 40 peças por vila, contra a IA ou online.">
+  <link rel="preload" as="image" href="assets/menu/tela-inicial.webp" fetchpriority="high">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&family=Shojumaru&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&text=忍火影策三暗雷上中下暁爆巻勝敗戦&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="in-menu">
+  <div id="scenery" aria-hidden="true"><div class="mist"></div><div class="mist late"></div><div id="petals"></div></div>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="mon" viewBox="-32 -32 64 64"><circle r="28.5" fill="none" stroke="currentColor" stroke-width="3"/><circle r="23.5" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".55"/><path fill="currentColor" fill-rule="evenodd" d="M0-21Q2.5-7 9-4L21 0Q7 2.5 4 9L0 21Q-2.5 7-9 4L-21 0Q-7-2.5-4-9Z M0-4a4 4 0 1 0 0 8a4 4 0 1 0 0-8Z" transform="rotate(12)"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></symbol>
+    <symbol id="i-rules" viewBox="0 0 24 24"><path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6M6 4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2M6 4v16M9.5 9h6M9.5 13h6" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="i-full" viewBox="0 0 24 24"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-board" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M9.3 4v16M14.7 4v16M4 9.3h16M4 14.7h16" stroke="currentColor" stroke-width="1.2" opacity=".8"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M12 2.8v2.6M12 18.6v2.6M2.8 12h2.6M18.6 12h2.6M5.5 5.5l1.8 1.8M16.7 16.7l1.8 1.8M5.5 18.5l1.8-1.8M16.7 7.3l1.8-1.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  </svg>
+  <header class="topbar">
+    <a class="brand" href="./"><span class="crest">忍</span><span class="brand-text">COMBATE <b>NINJA</b><small>BOARD GAME</small></span></a>
+    <nav>
+      <button id="menu-button" class="icon-button" hidden><svg><use href="#i-menu"/></svg><span class="label">Menu</span></button>
+      <button id="rules" class="icon-button"><svg><use href="#i-rules"/></svg><span class="label">Como jogar</span></button>
+      <button id="fullscreen" class="icon-button"><svg><use href="#i-full"/></svg><span class="label">Tela cheia</span></button>
+      <button id="board-only" class="icon-button" hidden aria-pressed="false"><svg><use href="#i-board"/></svg><span class="label">Apenas Tabuleiro</span></button>
+      <button id="settings" class="icon-button" aria-label="Configurações"><svg><use href="#i-gear"/></svg><span class="label">Configurações</span></button>
+    </nav>
+  </header>
+  <main>
+    <section id="menu-screen" class="entry-screen" aria-label="Menu principal">
+      <div class="hero" aria-hidden="true">
+        <div class="hero-backdrop"></div>
+        <div class="hero-stage" id="hero-stage">
+          <div class="hero-zoom">
+            <img class="hero-img" src="assets/menu/tela-inicial.webp" alt="" fetchpriority="high" decoding="async">
+            <span class="fx glow sun-red"></span><span class="fx glow sun"></span><span class="fx glow moon"></span>
+            <span class="fx mist-band"></span>
+            <span class="fx fall left"></span><span class="fx fall right"></span>
+            <span class="fx lake left"></span><span class="fx lake right"></span>
+            <span class="fx logo-shine"></span>
+          </div>
+        </div>
+        <div class="hero-shade"></div>
+        <div id="hero-particles"></div>
+      </div>
+      <div class="entry-content">
+        <h1 class="visually-hidden">Combate Ninja Board Game</h1>
+        <div class="menu-panel" aria-label="Opções de jogo">
+          <label for="difficulty">Dificuldade da IA</label>
+          <select id="difficulty">
+            <option value="easy">Fácil · Explorador</option>
+            <option value="medium" selected>Médio · Estrategista</option>
+            <option value="hard">Difícil · Tático</option>
+          </select>
+          <button class="primary full" id="new-ai"><span>Jogar contra IA</span><span class="arrow">→</span></button>
+          <button class="full" id="resume" hidden><span>Continuar partida</span><span class="arrow">↺</span></button>
+          <button class="full" id="online" aria-expanded="false"><span>Multiplayer online</span><span class="arrow">⚔</span></button>
+          <div id="lobby" hidden>
+            <label for="room-code">Código da sala</label>
+            <div class="join-row"><input id="room-code" maxlength="6" placeholder="ABC123" autocomplete="off" spellcheck="false"><button id="join">Entrar</button></div>
+            <div class="lobby-actions"><button id="create">Criar sala</button><label class="check"><input id="public-room" type="checkbox"> Sala pública</label></div>
+            <button id="refresh" class="text-button">Atualizar salas públicas</button>
+            <div id="rooms"></div>
+            <p id="room-info" role="status"></p>
+          </div>
+        </div>
+        <p class="fan-note">Fan-game não oficial, gratuito e sem fins lucrativos. Não é afiliado à Masashi Kishimoto, Shueisha, Studio Pierrot, Bandai Namco.<br>Fan game criado por Denilsom Lobo.</p>
+      </div>
+    </section>
+
+    <section id="game-screen" class="table" hidden aria-label="Partida">
+      <aside class="side side-left">
+        <div class="plate rival">
+          <svg class="plate-mon"><use href="#mon"/></svg>
+          <div class="plate-text"><small>Vila adversária</small><strong id="opponent">TREINAMENTO / IA</strong></div>
+          <span class="plate-count"><b id="red-count">40</b><small>peças</small></span>
+        </div>
+        <div class="turn-box">
+          <span class="turn-pill" id="turn" data-tone="setup">PREPARAÇÃO</span>
+          <h2 id="phase">Organize seu exército</h2>
+          <p id="board-message" role="status">Troque duas peças para montar sua formação.</p>
+        </div>
+        <div class="actions"><button id="shuffle">Formação aleatória</button><button id="reset">Reorganizar</button><button class="primary" id="ready">Pronto para combater →</button><button id="resign" hidden>Desistir</button><button class="primary" id="rematch" hidden>Jogar novamente</button></div>
+        <div class="plate own">
+          <svg class="plate-mon"><use href="#mon"/></svg>
+          <div class="plate-text"><small>Sua vila</small><strong id="you">Comandante</strong></div>
+          <span class="plate-count"><b id="blue-count">40</b><small>peças</small></span>
+        </div>
+      </aside>
+
+      <section class="arena">
+        <div class="board-frame">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <div class="coords files top" id="files-top" aria-hidden="true"></div>
+          <div class="coords ranks left" id="ranks-left" aria-hidden="true"></div>
+          <div class="board-well"><div id="board" role="grid" aria-label="Campo de batalha de dez por dez"></div></div>
+          <div class="coords ranks right" id="ranks-right" aria-hidden="true"></div>
+          <div class="coords files bottom" id="files-bottom" aria-hidden="true"></div>
+          <div id="battle" class="battle" hidden aria-live="assertive"></div>
+        </div>
+      </section>
+
+      <aside class="side side-right">
+        <section class="panel roster-section" aria-label="Hierarquias do seu exército">
+          <div class="section-heading"><h2>Seu exército</h2><span>Toque para ver habilidades</span></div>
+          <div id="roster" class="roster"></div>
+        </section>
+        <section class="panel guide" aria-live="polite"><div class="guide-icon" aria-hidden="true">巻</div><div><h3 id="guide-title">Escolha sua formação</h3><p id="guide-text">Clique em duas peças ou arraste para trocar suas posições. Quando terminar, confirme em Pronto para combater.</p></div></section>
+        <div class="panel game-meta"><span id="connection">Modo local · pronto para jogar</span><details class="history" open><summary>Diário da missão</summary><ol id="history"></ol></details></div>
+      </aside>
+    </section>
+  </main>
+  <button id="board-exit" class="board-exit" hidden aria-label="Sair do modo Apenas Tabuleiro">✕ <span>Sair</span></button>
+  <div id="banner" class="banner" hidden aria-hidden="true"><span></span></div>
+  <dialog id="rules-dialog">
+    <button class="close" data-close aria-label="Fechar">✕</button>
+    <h2>Como jogar</h2>
+    <p>Organize suas 40 peças nas quatro fileiras inferiores. Clique em duas peças ou arraste para trocar suas posições. Confirme em Pronto. Azul começa.</p>
+    <p>No seu turno, selecione uma peça e uma casa iluminada. Mova uma casa na vertical ou horizontal. Não atravesse peças nem os lagos. Armadilhas e pergaminhos são imóveis.</p>
+    <p>Genin percorre linhas livres, mas só ataca a uma casa de distância. Chuunin desarma armadilhas. Outros atacantes explodem junto com a armadilha. Itachi vence Naruto somente ao iniciar o ataque.</p>
+    <p>A maior força vence. Forças iguais eliminam ambas as peças. Os confrontos revelam as peças por 2,6 segundos. Depois, as inimigas voltam ao verso. A mesma peça pode percorrer a mesma ligação até seis vezes seguidas nos seus turnos, equivalentes a três idas e voltas.</p>
+    <p>Capture o pergaminho ou deixe o adversário sem movimentos válidos para vencer. O painel do exército mostra os sobreviventes da sua vila.</p>
+  </dialog>
+  <dialog id="settings-dialog">
+    <button class="close" data-close aria-label="Fechar">✕</button>
+    <h2>Configurações</h2>
+    <label class="check"><input type="checkbox" id="reduce-motion"> Reduzir animações</label>
+    <p>Use Tela cheia para expandir o campo de batalha. Pressione Esc para sair.</p>
+  </dialog>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

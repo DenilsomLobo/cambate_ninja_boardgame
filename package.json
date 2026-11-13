@@ -1,0 +1,18 @@
+{
+  "name": "combate-ninja-boardgame",
+  "version": "1.0.0",
+  "description": "Jogo de estratégia 2D inspirado em Combate, com temática ninja, inteligência artificial e multiplayer Firebase.",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DenilsomLobo/cambate_ninja_boardgame.git"
+  },
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs",
+    "deploy": "npm run build && firebase deploy --only functions,firestore:rules,hosting"
+  },
+  "devDependencies": { "firebase-tools": "^14.0.0" }
+}

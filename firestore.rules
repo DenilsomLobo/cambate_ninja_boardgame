@@ -1,0 +1,9 @@
+rules_version = '2';
+service cloud.firestore {
+ match /databases/{database}/documents {
+  function member(code) { return request.auth != null && (get(/databases/$(database)/documents/rooms/$(code)).data.players.blue == request.auth.uid || get(/databases/$(database)/documents/rooms/$(code)).data.players.red == request.auth.uid); }
+  match /rooms/{code}/views/{uid} { allow get: if request.auth != null && request.auth.uid == uid && member(code); allow list, write: if false; }
+  match /rooms/{code}/battles/{battle} { allow get: if member(code) && request.time < resource.data.expiresAt; allow list, write: if false; }
+  match /{document=**} { allow read, write: if false; }
+ }
+}
